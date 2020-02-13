@@ -113,7 +113,7 @@ public class MainController {
 		List<LocalDate> monthToShow = getDatesBetweenUsingJava8(startOfMonth, startOfNextMonth);
 		int[] months = {6, 7, 8, 9};
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-		int[] years = {currentYear, currentYear+1}; 
+		int[] years = {currentYear-1, currentYear, currentYear+1}; 
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("yearsInt", years);
