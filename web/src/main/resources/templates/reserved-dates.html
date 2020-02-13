@@ -17,7 +17,33 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-	<div>
+
+	<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+		<a class="navbar-brand" href="reserved-dates">Apartmani Ukić</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="navbarNavDropdown">
+			<ul class="navbar-nav">
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="#"
+					id="navbarDropdownMenuLink" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false">Odaberi mjesec</a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+						<div th:each="year : ${yearsInt}">
+							<a class="dropdown-item" th:each="month : ${monthsInt}" 
+							th:href="'reserved-dates?month='+${month}+'&year='+${year}" 
+							th:text="${month}+'. mjesec, '+${year}+'.'"></a>
+						</div>
+					</div></li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container">
 		<table class="table table-hover">
 			<thead class="thead-dark">
 				<tr>
@@ -150,18 +176,19 @@
 									<a
 									th:text="${apartment.apartmentReservations.get(date).tourists.name}"
 									th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
-								</a> </span><span
-									th:if="${apartment.apartmentReservations.get(date) == null}"
-									th:text="'prazno'">
-										prazno </span></td>
+								</a>
+							</span><span
+								th:if="${apartment.apartmentReservations.get(date) == null}"
+								th:text="'prazno'"> prazno </span></td>
 						</tr>
 					</span>
 				</div>
 				</div>
 			</tbody>
 		</table>
-	</div>
 
+
+	</div>
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->

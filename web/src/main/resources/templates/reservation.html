@@ -17,18 +17,16 @@
 </head>
 <body>
 
-	<input type="date" id="datepicker" name='from' size='9' value="" />
-
 <div class="container">
 	<form>
 		<div class="row">
-			<div class="col">
+			<div class="form-group col-md-6">
 				<label for="exampleFormControlInput1">Ime Gosta</label> <input
-					type="email" class="form-control" id="exampleFormControlInput1"
-					placeholder="name@example.com"
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
 					th:value="${reservation.tourists.name}">
 			</div>
-			<div class="col">
+			<div class="form-group col-md-6">
 				<label for="exampleFormControlSelect1">Apartman</label> <select
 					class="form-control" id="exampleFormControlSelect1">
 					<option th:each="apartment : ${apartments}" th:value="${apartment}"
@@ -40,47 +38,47 @@
 
 		</div>
 		<div class="row">
-			<div class="col">
-				<label for="exampleFormControlInput1">Datum dolaska</label> <input
-					type="date" id="datepicker" name='from' size='9'
+			<div class="form-group col-md-6">
+				<label for="datepicker">Datum dolaska</label> <input
+					type="date" id="datepicker"  class="form-control" name='from' size='9'
 					th:value="${reservation.checkInDate}" />
 			</div>
-			<div class="col">
+			<div class="form-group col-md-6">
 				<label for="exampleFormControlInput1">Broj osoba</label> <input
-					type="email" class="form-control" id="exampleFormControlInput1"
-					placeholder="name@example.com"
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
 					th:value="${reservation.tourists.numberOfPersons}">
 			</div>
 		</div>
 		<div class="row">
-			<div class="col">
-				<label for="exampleFormControlInput1">Datum odlaska</label> <input
-					type="date" id="datepicker" name='from' size='9'
+			<div class="form-group col-md-6">
+				<label for="datepicker2">Datum odlaska</label> <input
+					type="date" id="datepicker2" class="form-control" name='from' size='9'
 					th:value="${reservation.checkOutDate}" />
 			</div>
-			<div class="col">
+			<div class="form-group col-md-6">
 				<label for="exampleFormControlInput1">Broj odraslih</label> <input
-					type="email" class="form-control" id="exampleFormControlInput1"
-					placeholder="name@example.com"
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
 					th:value="${reservation.tourists.numberOfAdults}">
 			</div>
 		</div>
 		<div class="row">
-			<div class="col">
+			<div class="form-group col-md-6">
 				<label for="exampleFormControlInput1">Cijena po noći</label> <input
-					type="email" class="form-control" id="exampleFormControlInput1"
-					placeholder="45.21" th:value="${reservation.pricePerNight}">
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder="" th:value="${#numbers.formatDecimal(reservation.pricePerNight, 1, 'POINT', 2, 'COMMA')}">
 			</div>
-			<div class="col">
+			<div class="form-group col-md-6">
 				<label for="exampleFormControlInput1">Broj djece</label> <input
-					type="email" class="form-control" id="exampleFormControlInput1"
-					placeholder="name@example.com"
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
 					th:value="${reservation.tourists.numberOfChildren}">
 			</div>
 
 		</div>
 		<div class="row">
-			<div class="col md-2">
+			<div class="form-group col-md-3">
 				<div class="custom-control custom-checkbox">
 					<label class="btn btn-default active"> <input
 						th:if="${reservation.advancedPayment > 0}" type="checkbox"
@@ -93,70 +91,72 @@
 				</div>
 			</div>
 
-			<div class="col md-2">
+			<div class="form-group col-md-3">
 
 				<div class="form-group">
 					<label for="exampleFormControlSelect1">Valuta akontacije</label> <select
 						class="form-control" id="exampleFormControlSelect1">
 						<option th:if="${reservation.advPayCurrency == 'EUR'}" selected>EUR</option>
 						<option th:if="${reservation.advPayCurrency == 'HRK'}" selected>HRK</option>
+						<option th:if="${reservation.advPayCurrency != 'EUR'}">EUR</option>
+						<option th:if="${reservation.advPayCurrency != 'HRK'}">HRK</option>
 					</select>
 				</div>
 
 			</div>
 
-			<div class="col md-4">
+			<div class="form-group col-md-6">
 				<label for="exampleFormControlInput1">Grad</label> <input
-					type="email" class="form-control" id="exampleFormControlInput1"
-					placeholder="name@example.com"
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
 					th:value="${reservation.tourists.city}">
 			</div>
 
 		</div>
 
 		<div class="row">
-			<div class="col">
+			<div class="form-group col-md-6">
 				<label for="exampleFormControlInput1">Iznos akontacije</label> <input
-					type="email" class="form-control" id="exampleFormControlInput1"
-					placeholder="1500,21" th:value="${reservation.advancedPayment}">
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder="" th:value="${#numbers.formatDecimal(reservation.advancedPayment, 1, 'POINT', 2, 'COMMA')}">
 			</div>
 
-			<div class="col">
+			<div class="form-group col-md-6">
 				<label for="exampleFormControlInput1">Država</label> <input
-					type="email" class="form-control" id="exampleFormControlInput1"
-					placeholder="name@example.com"
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
 					th:value="${reservation.tourists.country}">
 			</div>
 
 		</div>
 
 		<div class="row">
-			<div class="col">
+			<div class="form-group col-md-6">
 				<label for="exampleFormControlInput1">Ukupna cijena</label> <input
-					type="email" class="form-control" id="exampleFormControlInput1"
-					placeholder="1500,21" th:value="${reservation.totalPrice}">
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder="" th:value="${#numbers.formatDecimal(reservation.totalPrice, 1, 'POINT', 2, 'COMMA')}">
 			</div>
 
-			<div class="col md">
+			<div class="form-group col-md-6">
 				<label for="exampleFormControlInput1">E-mail</label> <input
 					type="email" class="form-control" id="exampleFormControlInput1"
-					placeholder="name@example.com"
+					placeholder=""
 					th:value="${reservation.tourists.email}">
 			</div>
 		</div>
 
 		<div class="row justify-content-end">
-			<div class="col-6">
+			<div class="form-group col-md-6">
 
 				<label for="exampleFormControlInput1">Broj telefona</label> <input
-					type="email" class="form-control" id="exampleFormControlInput1"
-					placeholder="name@example.com"
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
 					th:value="${reservation.tourists.phoneNumber}">
 			</div>
 		</div>
 
 		<div class="row justify-content-end">
-			<div class="col-6">
+			<div class="form-group col-md-6">
 
 								<div class="custom-control custom-checkbox">
 					<label class="btn btn-default active"> <input
@@ -172,7 +172,7 @@
 		</div>
 		
 		<div class="row">
-			<div class="col">
+			<div class="form-group col-md-12">
 				<label for="exampleFormControlInput1">Bilješke</label> <textarea
 					class="form-control" id="exampleFormControlInput1"
 					rows="4"

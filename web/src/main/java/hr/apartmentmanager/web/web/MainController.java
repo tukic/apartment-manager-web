@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -110,8 +111,13 @@ public class MainController {
 		LocalDate startOfNextMonth = startOfMonth.plusMonths(1);
 		
 		List<LocalDate> monthToShow = getDatesBetweenUsingJava8(startOfMonth, startOfNextMonth);
+		int[] months = {6, 7, 8, 9};
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		int[] years = {currentYear, currentYear+1}; 
 		
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("yearsInt", years);
+		mav.addObject("monthsInt", months);
 		mav.addObject("apartments", apartments);
 		mav.addObject("month", monthToShow);
         mav.setViewName("reserved-dates");
