@@ -1,0 +1,147 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+
+
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<div th:each="date: ${month}">
+		<!--  
+		<span th:switch="${date.dayOfWeek}">
+			<span th:case="'SUNDAY'" th:text="'nedjelja' + $date"> </span>
+		</span> 
+		-->
+
+		<div th:if="${date.dayOfWeek.name() == 'SUNDAY'}">Nedjelja</div>
+	</div>
+
+	<div>
+		<section th:each="apartment : ${apartments}">
+			<p th:text="'Apartman: ' + ${apartment.internalName}" />
+			<table>
+				<thead>
+					<tr>
+						<th>datum</th>
+						<th>ime</th>
+						<th>cijena</th>
+						<th>rezervacija</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="date: ${month}">
+						<div th:if="${apartment.apartmentReservations.get(date) != null}">
+							<td th:text="${date}">1</td>
+							<td
+								th:text="${apartment.apartmentReservations.get(date).tourists.name}">100</td>
+							<td
+								th:text="${apartment.apartmentReservations.get(date).pricePerNight}">John</td>
+							<td
+								th:text="${apartment.apartmentReservations.get(date).confirmed}">John</td>
+						</div>
+
+						<div th:if="${apartment.apartmentReservations.get(date) == null}">
+
+							<td th:text="${date}">1</td>
+							<td th:text="prazno">100</td>
+							<td th:text="prazno">John</td>
+							<td th:text="prazno">John</td>
+						</div>
+					</tr>
+				</tbody>
+			</table>
+		</section>
+	</div>
+
+	<div>
+		<table class="table table-hover">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">datum</th>
+					<th scope="col" th:each="apartment : ${apartments}"
+						th:text="${apartment.apartmentName}">apartman
+					</td>
+				</tr>
+			</thead>
+			<tbody>
+				<div th:each="date: ${month}">
+					<div th:if="${date.dayOfWeek.name() == 'SUNDAY'}">
+					<span>
+						<tr class="bg-danger">
+							<th scope="row"
+								th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' NED'">datum</th>
+							<td th:each="apartment : ${apartments}"><span
+								th:if="${apartment.apartmentReservations.get(date)} != null">
+									<p
+										th:text="${apartment.apartmentReservations.get(date).tourists.name}">
+							</span> <span
+								th:if="${apartment.apartmentReservations.get(date) == null}">
+									prazno </span></td>
+						</tr>
+					</span>
+				</div>
+				<div th:if="${date.dayOfWeek.name() == 'SATURDAY'}">
+					<span>
+						<tr class="bg-info">
+							<th scope="row"
+								th:text="${#temporals.format(date, 'dd.MM.yyyy')}  + ' SUB'">datum</th>
+							<td th:each="apartment : ${apartments}"><span
+								th:if="${apartment.apartmentReservations.get(date)} != null">
+									<p
+										th:text="${apartment.apartmentReservations.get(date).tourists.name}">
+							</span> <span
+								th:if="${apartment.apartmentReservations.get(date) == null}">
+									prazno </span></td>
+						</tr>
+					</span>
+				</div>
+				<div th:if="${date.dayOfWeek.name() != 'SUNDAY' and date.dayOfWeek.name() != 'SATURDAY'}">
+					<span>
+						<tr>
+							<th scope="row"
+								th:text="${#temporals.format(date, 'dd.MM.yyyy')}">datum</th>
+							<td th:each="apartment : ${apartments}"><span
+								th:if="${apartment.apartmentReservations.get(date)} != null">
+									<p
+										th:text="${apartment.apartmentReservations.get(date).tourists.name}">
+							</span> <span
+								th:if="${apartment.apartmentReservations.get(date) == null}">
+									prazno </span></td>
+						</tr>
+					</span>
+
+					</div>
+				</div>
+			</tbody>
+		</table>
+	</div>
+
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+
+</body>
+</html>
