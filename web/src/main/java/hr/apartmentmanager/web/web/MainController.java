@@ -1,21 +1,15 @@
 package hr.apartmentmanager.web.web;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -61,8 +55,25 @@ public class MainController {
 		return apartmentRepository.findAll();
 	}
 	
+	@GetMapping(path = "/reservation")
+	public ModelAndView getReservation(
+			@RequestParam(required = true) Long id) {
+		
+		Optional<Reservation> reservationOpt = reservationRepository.findById(id);
+
+		if(!reservationOpt.isPresent()) {
+			return new ModelAndView("not-found");
+		}
+		
+		Reservation reservation = reservationOpt.get();
+		ModelAndView mav = new ModelAndView("reservation");
+		mav.addObject("apartments", apartmentRepository.findAll());
+		mav.addObject("reservation", reservation);
+		return mav;
+	}
+	
 	@GetMapping(path = "/reserved-dates")
-	public ModelAndView getReservedDatesAugust(@RequestParam(required = false) Integer month
+	public ModelAndView getReservedDates(@RequestParam(required = false) Integer month
 			, @RequestParam(required = false) Integer year) {
 		
 		month = (month != null) ? month : Calendar.getInstance().get(Calendar.MONTH);
@@ -95,8 +106,6 @@ public class MainController {
 			}
 		}
 		
-		
-		
 		LocalDate startOfMonth = LocalDate.of(year, month, 1);
 		LocalDate startOfNextMonth = startOfMonth.plusMonths(1);
 		
@@ -113,27 +122,6 @@ public class MainController {
 	public @ResponseBody Iterable<Reservation> getAllReservatiosn() {
 		// This returns a JSON or XML with the users
 		return reservationRepository.findAll();
-	}
-
-	@GetMapping("/reservations")
-	public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
-			Model model) {
-		
-		for (Reservation reservation : reservationRepository.findAll()) {
-			if(reservation != null)
-				System.out.println(reservation.getReservationId());
-				if(reservation.getTourists() != null)
-					if(reservation.getTourists().getName() != null)
-						System.out.println(reservation.getTourists().getName());
-						System.out.println(reservation.getConfirmed());
-						System.out.println(reservation.getApartment());
-		}
-		
-		/*
-		reservationRepository.findById(Long.parseLong("1")).ifPresent(a -> System.out.println(a.getPricePerNight()));*/
-		
-		model.addAttribute("name", name);
-		return "reservations";
 	}
 	
 	@GetMapping("/apartments")

@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+	<input type="date" id="datepicker" name='from' size='9' value="" />
+
+<div class="container">
+	<form>
+		<div class="row">
+			<div class="col">
+				<label for="exampleFormControlInput1">Ime Gosta</label> <input
+					type="email" class="form-control" id="exampleFormControlInput1"
+					placeholder="name@example.com"
+					th:value="${reservation.tourists.name}">
+			</div>
+			<div class="col">
+				<label for="exampleFormControlSelect1">Apartman</label> <select
+					class="form-control" id="exampleFormControlSelect1">
+					<option th:each="apartment : ${apartments}" th:value="${apartment}"
+						th:text="${apartment.apartmentName}"
+						th:selected="${apartment.apartmentId==reservation.apartment.apartmentId}">
+					</option>
+				</select>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col">
+				<label for="exampleFormControlInput1">Datum dolaska</label> <input
+					type="date" id="datepicker" name='from' size='9'
+					th:value="${reservation.checkInDate}" />
+			</div>
+			<div class="col">
+				<label for="exampleFormControlInput1">Broj osoba</label> <input
+					type="email" class="form-control" id="exampleFormControlInput1"
+					placeholder="name@example.com"
+					th:value="${reservation.tourists.numberOfPersons}">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<label for="exampleFormControlInput1">Datum odlaska</label> <input
+					type="date" id="datepicker" name='from' size='9'
+					th:value="${reservation.checkOutDate}" />
+			</div>
+			<div class="col">
+				<label for="exampleFormControlInput1">Broj odraslih</label> <input
+					type="email" class="form-control" id="exampleFormControlInput1"
+					placeholder="name@example.com"
+					th:value="${reservation.tourists.numberOfAdults}">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<label for="exampleFormControlInput1">Cijena po noći</label> <input
+					type="email" class="form-control" id="exampleFormControlInput1"
+					placeholder="45.21" th:value="${reservation.pricePerNight}">
+			</div>
+			<div class="col">
+				<label for="exampleFormControlInput1">Broj djece</label> <input
+					type="email" class="form-control" id="exampleFormControlInput1"
+					placeholder="name@example.com"
+					th:value="${reservation.tourists.numberOfChildren}">
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col md-2">
+				<div class="custom-control custom-checkbox">
+					<label class="btn btn-default active"> <input
+						th:if="${reservation.advancedPayment > 0}" type="checkbox"
+						checked="checked"> <input
+						th:if="${reservation.advancedPayment == 0}" type="checkbox">
+						Uplaćena akontacija
+
+					</label>
+
+				</div>
+			</div>
+
+			<div class="col md-2">
+
+				<div class="form-group">
+					<label for="exampleFormControlSelect1">Valuta akontacije</label> <select
+						class="form-control" id="exampleFormControlSelect1">
+						<option th:if="${reservation.advPayCurrency == 'EUR'}" selected>EUR</option>
+						<option th:if="${reservation.advPayCurrency == 'HRK'}" selected>HRK</option>
+					</select>
+				</div>
+
+			</div>
+
+			<div class="col md-4">
+				<label for="exampleFormControlInput1">Grad</label> <input
+					type="email" class="form-control" id="exampleFormControlInput1"
+					placeholder="name@example.com"
+					th:value="${reservation.tourists.city}">
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<label for="exampleFormControlInput1">Iznos akontacije</label> <input
+					type="email" class="form-control" id="exampleFormControlInput1"
+					placeholder="1500,21" th:value="${reservation.advancedPayment}">
+			</div>
+
+			<div class="col">
+				<label for="exampleFormControlInput1">Država</label> <input
+					type="email" class="form-control" id="exampleFormControlInput1"
+					placeholder="name@example.com"
+					th:value="${reservation.tourists.country}">
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="col">
+				<label for="exampleFormControlInput1">Ukupna cijena</label> <input
+					type="email" class="form-control" id="exampleFormControlInput1"
+					placeholder="1500,21" th:value="${reservation.totalPrice}">
+			</div>
+
+			<div class="col md">
+				<label for="exampleFormControlInput1">E-mail</label> <input
+					type="email" class="form-control" id="exampleFormControlInput1"
+					placeholder="name@example.com"
+					th:value="${reservation.tourists.email}">
+			</div>
+		</div>
+
+		<div class="row justify-content-end">
+			<div class="col-6">
+
+				<label for="exampleFormControlInput1">Broj telefona</label> <input
+					type="email" class="form-control" id="exampleFormControlInput1"
+					placeholder="name@example.com"
+					th:value="${reservation.tourists.phoneNumber}">
+			</div>
+		</div>
+
+		<div class="row justify-content-end">
+			<div class="col-6">
+
+								<div class="custom-control custom-checkbox">
+					<label class="btn btn-default active"> <input
+						th:if="${reservation.tourists.pets}" type="checkbox"
+						checked="checked"> <input
+						th:unless="${reservation.tourists.pets}" type="checkbox">
+						Životinje
+
+					</label>
+
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col">
+				<label for="exampleFormControlInput1">Bilješke</label> <textarea
+					class="form-control" id="exampleFormControlInput1"
+					rows="4"
+					th:inline="text">[[${reservation.tourists.touristsNote}]]</textarea>
+			</div>
+		</div>
+
+	</form>
+</div>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+
+</body>
+</html>

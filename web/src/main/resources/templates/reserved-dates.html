@@ -28,53 +28,135 @@
 				</tr>
 			</thead>
 			<tbody>
+
+				<!-- rows in table croatian short for name of the week and apropriate colour -->
 				<div th:each="date: ${month}">
-					<div th:if="${date.dayOfWeek.name() == 'SUNDAY'}">
-					<span>
-						<tr class="bg-danger">
-							<th scope="row"
-								th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' NED'">datum</th>
-							<td th:each="apartment : ${apartments}"><span
-								th:if="${apartment.apartmentReservations.get(date)} != null">
-									<p
-										th:text="${apartment.apartmentReservations.get(date).tourists.name}">
-							</span> <span
-								th:if="${apartment.apartmentReservations.get(date) == null}">
-									prazno </span></td>
-						</tr>
-					</span>
+					<div th:if="${date.dayOfWeek.name() == 'MONDAY'}">
+						<span>
+							<tr>
+								<th scope="row"
+									th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' PON'">datum
+									PON</th>
+								<td th:each="apartment : ${apartments}"><span
+									th:if="${apartment.apartmentReservations.get(date)} != null">
+										<a
+										th:text="${apartment.apartmentReservations.get(date).tourists.name}"
+										th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+								</span> <span
+									th:if="${apartment.apartmentReservations.get(date) == null}">
+										prazno </span></td>
+							</tr>
+						</span>
+
+					</div>
+					<div th:if="${date.dayOfWeek.name() == 'TUESDAY'}">
+						<span>
+							<tr>
+								<th scope="row"
+									th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' UTO'">datum
+									UTO</th>
+								<td th:each="apartment : ${apartments}"><span
+									th:if="${apartment.apartmentReservations.get(date)} != null">
+										<a
+										th:text="${apartment.apartmentReservations.get(date).tourists.name}"
+										th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+								</span> <span
+									th:if="${apartment.apartmentReservations.get(date) == null}">
+										prazno </span></td>
+							</tr>
+						</span>
+
+					</div>
+
+					<div th:if="${date.dayOfWeek.name() == 'WEDNESDAY'}">
+				<tr>
+					<th scope="row"
+						th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' SRI'">datum
+						SRI</th>
+					<td th:each="apartment : ${apartments}"><span
+						th:if="${apartment.apartmentReservations.get(date)} != null">
+							<a
+							th:text="${apartment.apartmentReservations.get(date).tourists.name}"
+							th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+					</span> <span th:if="${apartment.apartmentReservations.get(date) == null}">
+							prazno </span></td>
+				</tr>
+				</span>
+
 				</div>
+
+				<div th:if="${date.dayOfWeek.name() == 'THURSDAY'}">
+					<tr>
+						<th scope="row"
+							th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' ČET'">datum
+							ČET</th>
+						<td th:each="apartment : ${apartments}"><span
+							th:if="${apartment.apartmentReservations.get(date)} != null">
+								<a
+								th:text="${apartment.apartmentReservations.get(date).tourists.name}"
+								th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+						</span> <span
+							th:if="${apartment.apartmentReservations.get(date) == null}">
+								prazno </span></td>
+					</tr>
+					</span>
+
+				</div>
+
+				<div th:if="${date.dayOfWeek.name() == 'FRIDAY'}">
+					<tr>
+						<th scope="row"
+							th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' PET'">datum
+							PET</th>
+						<td th:each="apartment : ${apartments}"><span
+							th:if="${apartment.apartmentReservations.get(date)} != null">
+								<a
+								th:text="${apartment.apartmentReservations.get(date).tourists.name}"
+								th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+						</span> <span
+							th:if="${apartment.apartmentReservations.get(date) == null}">
+								prazno </span></td>
+					</tr>
+					</span>
+
+				</div>
+
 				<div th:if="${date.dayOfWeek.name() == 'SATURDAY'}">
 					<span>
 						<tr class="bg-info">
 							<th scope="row"
-								th:text="${#temporals.format(date, 'dd.MM.yyyy')}  + ' SUB'">datum</th>
+								th:text="${#temporals.format(date, 'dd.MM.yyyy')}  + ' SUB'">datum
+								SUB</th>
 							<td th:each="apartment : ${apartments}"><span
 								th:if="${apartment.apartmentReservations.get(date)} != null">
-									<p
-										th:text="${apartment.apartmentReservations.get(date).tourists.name}">
+									<a class="bg-primary text-white"
+									th:text="${apartment.apartmentReservations.get(date).tourists.name}"
+									th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+								</a>
 							</span> <span
 								th:if="${apartment.apartmentReservations.get(date) == null}">
 									prazno </span></td>
 						</tr>
 					</span>
 				</div>
-				<div th:if="${date.dayOfWeek.name() != 'SUNDAY' and date.dayOfWeek.name() != 'SATURDAY'}">
+				<div th:if="${date.dayOfWeek.name() == 'SUNDAY'}">
 					<span>
-						<tr>
+						<tr class="bg-danger">
 							<th scope="row"
-								th:text="${#temporals.format(date, 'dd.MM.yyyy')}">datum</th>
+								th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' NED'">datum
+								NED</th>
 							<td th:each="apartment : ${apartments}"><span
 								th:if="${apartment.apartmentReservations.get(date)} != null">
-									<p
-										th:text="${apartment.apartmentReservations.get(date).tourists.name}">
-							</span> <span
-								th:if="${apartment.apartmentReservations.get(date) == null}">
-									prazno </span></td>
+									<a
+									th:text="${apartment.apartmentReservations.get(date).tourists.name}"
+									th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+								</a> </span><span
+									th:if="${apartment.apartmentReservations.get(date) == null}"
+									th:text="'prazno'">
+										prazno </span></td>
 						</tr>
 					</span>
-
-					</div>
+				</div>
 				</div>
 			</tbody>
 		</table>
