@@ -1,4 +1,4 @@
-package hr.apartmentmanager.web.web.hr.apartmentmanager.web.web;
+package hr.apartmentmanager.web.web;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;

@@ -17,54 +17,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-
-	<div th:each="date: ${august2019dates}">
-		<!--  
-		<span th:switch="${date.dayOfWeek}">
-			<span th:case="'SUNDAY'" th:text="'nedjelja' + $date"> </span>
-		</span> 
-		-->
-
-		<div th:if="${date.dayOfWeek.name() == 'SUNDAY'}">Nedjelja</div>
-	</div>
-
-	<div>
-		<section th:each="apartment : ${apartments}">
-			<p th:text="'Apartman: ' + ${apartment.internalName}" />
-			<table>
-				<thead>
-					<tr>
-						<th>datum</th>
-						<th>ime</th>
-						<th>cijena</th>
-						<th>rezervacija</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="date: ${august2019dates}">
-						<div th:if="${apartment.apartmentReservations.get(date) != null}">
-							<td th:text="${date}">1</td>
-							<td
-								th:text="${apartment.apartmentReservations.get(date).tourists.name}">100</td>
-							<td
-								th:text="${apartment.apartmentReservations.get(date).pricePerNight}">John</td>
-							<td
-								th:text="${apartment.apartmentReservations.get(date).confirmed}">John</td>
-						</div>
-
-						<div th:if="${apartment.apartmentReservations.get(date) == null}">
-
-							<td th:text="${date}">1</td>
-							<td th:text="prazno">100</td>
-							<td th:text="prazno">John</td>
-							<td th:text="prazno">John</td>
-						</div>
-					</tr>
-				</tbody>
-			</table>
-		</section>
-	</div>
-
 	<div>
 		<table class="table table-hover">
 			<thead class="thead-dark">
@@ -76,7 +28,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<div th:each="date: ${august2019dates}">
+				<div th:each="date: ${month}">
 					<div th:if="${date.dayOfWeek.name() == 'SUNDAY'}">
 					<span>
 						<tr class="bg-danger">

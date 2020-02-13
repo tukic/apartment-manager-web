@@ -37,6 +37,7 @@ public class PricepernightId implements java.io.Serializable {
 		this.priceFrom = priceFrom;
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if ((this == other))
 			return true;
@@ -51,6 +52,7 @@ public class PricepernightId implements java.io.Serializable {
 						&& castOther.getPriceFrom() != null && this.getPriceFrom().equals(castOther.getPriceFrom())));
 	}
 
+	@Override
 	public int hashCode() {
 		int result = 17;
 
