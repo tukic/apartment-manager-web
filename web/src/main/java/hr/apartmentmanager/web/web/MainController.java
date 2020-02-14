@@ -1,12 +1,12 @@
 package hr.apartmentmanager.web.web;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import hr.apartmentmanager.enumerations.ReservationStatus;
 import hr.apartmentmanager.web.model.Apartment;
 import hr.apartmentmanager.web.model.Reservation;
+import hr.apartmentmanager.web.model.Tourists;
 
 @Controller // This means that this class is a Controller
 @RequestMapping(path = "/demo") // This means URL's start with /demo (after Application path)
@@ -35,6 +37,9 @@ public class MainController {
 	
 	@Autowired
 	private ApartmentRepository apartmentRepository;
+	
+	@Autowired
+	private TouristsRepository touristsRepository;
 
 	@PostMapping(path = "/add") // Map ONLY POST Requests
 	public @ResponseBody String addNewReservation(@RequestParam int reservationId, @RequestParam LocalDate checkInDate,
@@ -54,6 +59,83 @@ public class MainController {
 	public @ResponseBody Iterable<Apartment> getAllApartments() {
 		// This returns a JSON or XML with the users
 		return apartmentRepository.findAll();
+	}
+	
+	
+	@PostMapping(path = "/reservation")
+	public RedirectView  getReservation(
+			@RequestParam("name") String touristsName,
+			@RequestParam("apartmentName") String apartmentName,
+			@RequestParam("checkInDate") String checkInDate,
+			@RequestParam("persons") String numberOfPersons,
+			@RequestParam("checkOutDate") String checkOutDate,
+			@RequestParam("adults") String numberOfAdults,
+			@RequestParam("pricePerNight") String pricePerNight,
+			@RequestParam("children") String numberOfChildren,
+			@RequestParam(name = "advancedPaymentPaid", required = false) String advancedPaymentPaid,
+			@RequestParam("advancedPaymentCurrency") String advancedPaymentCurrency,
+			@RequestParam("city") String city,
+			@RequestParam("advancedPaymentAmount") String advancedPaymentAmount,
+			@RequestParam("country") String country,
+			@RequestParam("totalPrice") String totalPrice,
+			@RequestParam("email") String email,
+			@RequestParam("phone") String phone,
+			@RequestParam(name = "pets", required = false) String pets,
+			@RequestParam("notes") String notes
+			) {
+		/*
+		
+		if(advancedPaymentPaid==null)
+			advancedPaymentPaid="no";
+		if(pets==null)
+			pets="no";
+		boolean petsBool = pets.equals("no") ? false : true;
+		
+		System.out.println(touristsName
+				+ checkInDate.toString() 
+				+ advancedPaymentPaid 
+				+ advancedPaymentAmount
+				+ " " + apartmentName);
+		System.out.println();
+		Tourists tourists = touristsRepository.findById(Long.valueOf(40)).get();/*new Tourists(touristsName, country, city,
+				Integer.valueOf(numberOfAdults), Integer.valueOf(numberOfChildren)
+				, Integer.valueOf(numberOfPersons), email, phone, petsBool, notes);
+		tourists.setTouristsId(Long.valueOf(42));
+		touristsRepository.save(tourists);
+		
+		for (Apartment apartment : apartmentRepository.findAll()) {
+			if(apartment.getApartmentName().equals(apartmentName)) {
+				
+				//apartmentRepository.delete(apartment);
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+				System.out.println(apartment.getApartmentId());
+				
+				System.out.println(tourists);
+				System.out.println(apartment);
+				
+				Reservation reservation = 
+						new Reservation(tourists
+								, apartment
+								, LocalDate.parse(checkInDate, formatter)
+								, LocalDate.parse(checkOutDate, formatter)
+								//, BigDecimal.valueOf(Double.parseDouble(pricePerNight))
+								, new BigDecimal(pricePerNight.replace(".", "").replace(",", "."))
+								//, BigDecimal.valueOf(Double.parseDouble(totalPrice))
+								, new BigDecimal(totalPrice.replace(".", "").replace(",", "."))
+								, ReservationStatus.reservation
+								//, BigDecimal.valueOf(Double.parseDouble(advancedPaymentAmount))
+								, new BigDecimal(advancedPaymentAmount.replace(".", "").replace(",", "."))
+								, advancedPaymentCurrency);
+				
+				reservation.setReservationId(Long.valueOf(42));
+				
+				reservationRepository.save(reservation);
+				return new RedirectView("reserved-dates");
+			}
+		}
+		*/
+		//Reservation reservation = new Reservation(tourists, apartment, checkInDate, checkOutDate, pricePerNight, totalPrice, confirmed, advancedPayment, advPayCurrency)
+		return new RedirectView("error");
 	}
 	
 	@GetMapping(path = "/reservation")
@@ -96,14 +178,6 @@ public class MainController {
 				//for(LocalDate date : reservation.getCheckInDate().datesUntil(reservation.getCheckOutDate()).collect(Collectors.toList()))
 				for(LocalDate date : getDatesBetweenUsingJava8(reservation.getCheckInDate(), reservation.getCheckOutDate()))
 					apartment.getApartmentReservations().put(date, reservation);
-			}
-		}
-		
-		for (Apartment apartment : apartments) {
-			for(Entry<LocalDate, Reservation> reservationDate : apartment.getApartmentReservations().entrySet())  {
-				System.out.println(reservationDate.getKey() +
-						" -> " + apartment.getApartmentName() + " : " +
-						reservationDate.getValue().getTourists().getName());
 			}
 		}
 		

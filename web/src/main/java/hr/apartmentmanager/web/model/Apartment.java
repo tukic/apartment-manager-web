@@ -34,6 +34,8 @@ public class Apartment implements java.io.Serializable {
 	private String apartmentNote;
 	@OneToMany(targetEntity=PricePerNight.class, mappedBy="apartment", fetch=FetchType.EAGER)
 	private Set pricepernights = new HashSet(0);
+	@OneToMany(targetEntity=Reservation.class, mappedBy="apartment", fetch=FetchType.LAZY)
+	private Set<Reservation> reservations = new HashSet<Reservation>(0);
 	@Transient
 	@Autowired
 	private Map<LocalDate, Reservation> apartmentReservations = new HashMap<LocalDate, Reservation>();

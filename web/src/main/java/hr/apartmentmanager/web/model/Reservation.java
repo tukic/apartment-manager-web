@@ -26,11 +26,9 @@ public class Reservation implements java.io.Serializable {
 	private Long reservationId;
 	@ManyToOne
 	@JoinColumn(name="touristsId")	
-	@MapsId("touristsId")
 	private Tourists tourists;
 	@ManyToOne
 	@JoinColumn(name="apartmentId")	
-	@MapsId("apartmentId")
 	private Apartment apartment;
 	private LocalDate checkInDate;
 	private LocalDate checkOutDate;

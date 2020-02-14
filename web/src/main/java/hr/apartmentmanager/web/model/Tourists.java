@@ -1,6 +1,11 @@
 package hr.apartmentmanager.web.model;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -22,8 +27,8 @@ public class Tourists implements java.io.Serializable {
 	private String phoneNumber;
 	private Boolean pets;
 	private String touristsNote;
-	//@OneToMany(targetEntity=Reservation.class, mappedBy="tourists", fetch=FetchType.EAGER)
-	//private Set<Reservation> reservations = new HashSet<Reservation>(0);
+	@OneToMany(targetEntity=Reservation.class, mappedBy="tourists", fetch=FetchType.LAZY)
+	private Set<Reservation> reservations = new HashSet<Reservation>(0);
 
 	public Tourists() {
 	}
