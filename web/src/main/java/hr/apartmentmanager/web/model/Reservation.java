@@ -7,10 +7,11 @@ import java.time.LocalDate;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import hr.apartmentmanager.enumerations.ReservationStatus;
@@ -23,6 +24,7 @@ import hr.apartmentmanager.enumerations.ReservationStatus;
 public class Reservation implements java.io.Serializable {
 
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long reservationId;
 	@ManyToOne
 	@JoinColumn(name="touristsId")	

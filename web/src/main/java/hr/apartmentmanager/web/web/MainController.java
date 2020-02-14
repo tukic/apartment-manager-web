@@ -1,8 +1,6 @@
 package hr.apartmentmanager.web.web;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.LinkedHashSet;
@@ -13,6 +11,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -83,7 +83,7 @@ public class MainController {
 			@RequestParam(name = "pets", required = false) String pets,
 			@RequestParam("notes") String notes
 			) {
-		/*
+		
 		
 		if(advancedPaymentPaid==null)
 			advancedPaymentPaid="no";
@@ -97,10 +97,17 @@ public class MainController {
 				+ advancedPaymentAmount
 				+ " " + apartmentName);
 		System.out.println();
-		Tourists tourists = touristsRepository.findById(Long.valueOf(40)).get();/*new Tourists(touristsName, country, city,
+		//Tourists tourists = touristsRepository.findById(Long.valueOf(40)).get();
+		Tourists tourists = new Tourists(touristsName, country, city,
 				Integer.valueOf(numberOfAdults), Integer.valueOf(numberOfChildren)
 				, Integer.valueOf(numberOfPersons), email, phone, petsBool, notes);
-		tourists.setTouristsId(Long.valueOf(42));
+		System.out.println(tourists.getTouristsId());
+		
+		//touristsRepository.save(tourists);
+		
+		//tourists.setTouristsId(Long.valueOf(42));
+		
+		/*		
 		touristsRepository.save(tourists);
 		
 		for (Apartment apartment : apartmentRepository.findAll()) {
@@ -148,6 +155,9 @@ public class MainController {
 			return new ModelAndView("not-found");
 		}
 		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println(auth.getPrincipal());
+		
 		Reservation reservation = reservationOpt.get();
 		ModelAndView mav = new ModelAndView("reservation");
 		mav.addObject("apartments", apartmentRepository.findAll());
@@ -188,6 +198,9 @@ public class MainController {
 		int[] months = {6, 7, 8, 9};
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 		int[] years = {currentYear-1, currentYear, currentYear+1}; 
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		System.out.println(auth.getPrincipal());
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("yearsInt", years);
