@@ -12,6 +12,23 @@
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
 
+<style type="text/css">
+.tableFixHead          { overflow-y: auto; height: 100px; }
+.tableFixHead thead th { position: sticky; top: 0; }
+
+/* Just common table stuff. Really. */
+table  { border-collapse: collapse; width: 100%; }
+th, td { padding: 8px 16px; }
+th     { background:#eee; }
+
+.tableFixHead,
+.tableFixHead td {
+  box-shadow: inset 1px -1px #000;
+}
+.tableFixHead th {
+  box-shadow: inset 1px 1px #000, 0 1px #000;
+}
+</style>
 
 <title>Getting Started: Serving Web Content</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -34,9 +51,9 @@
 					aria-haspopup="true" aria-expanded="false">Odaberi mjesec</a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
 						<div th:each="year : ${yearsInt}">
-							<a class="dropdown-item" th:each="month : ${monthsInt}" 
-							th:href="'reserved-dates?month='+${month}+'&year='+${year}" 
-							th:text="${month}+'. mjesec, '+${year}+'.'"></a>
+							<a class="dropdown-item" th:each="month : ${monthsInt}"
+								th:href="'reserved-dates?month='+${month}+'&year='+${year}"
+								th:text="${month}+'. mjesec, '+${year}+'.'"></a>
 						</div>
 					</div></li>
 			</ul>
@@ -44,7 +61,7 @@
 	</nav>
 
 	<div class="container">
-		<table class="table table-hover">
+		<table class="table tableFixHead table-hover">
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">datum</th>
@@ -95,94 +112,95 @@
 					</div>
 
 					<div th:if="${date.dayOfWeek.name() == 'WEDNESDAY'}">
-				<tr>
-					<th scope="row"
-						th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' SRI'">datum
-						SRI</th>
-					<td th:each="apartment : ${apartments}"><span
-						th:if="${apartment.apartmentReservations.get(date)} != null">
-							<a
-							th:text="${apartment.apartmentReservations.get(date).tourists.name}"
-							th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
-					</span> <span th:if="${apartment.apartmentReservations.get(date) == null}">
-							prazno </span></td>
-				</tr>
-				</span>
-
-				</div>
-
-				<div th:if="${date.dayOfWeek.name() == 'THURSDAY'}">
-					<tr>
-						<th scope="row"
-							th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' ČET'">datum
-							ČET</th>
-						<td th:each="apartment : ${apartments}"><span
-							th:if="${apartment.apartmentReservations.get(date)} != null">
-								<a
-								th:text="${apartment.apartmentReservations.get(date).tourists.name}"
-								th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
-						</span> <span
-							th:if="${apartment.apartmentReservations.get(date) == null}">
-								prazno </span></td>
-					</tr>
-					</span>
-
-				</div>
-
-				<div th:if="${date.dayOfWeek.name() == 'FRIDAY'}">
-					<tr>
-						<th scope="row"
-							th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' PET'">datum
-							PET</th>
-						<td th:each="apartment : ${apartments}"><span
-							th:if="${apartment.apartmentReservations.get(date)} != null">
-								<a
-								th:text="${apartment.apartmentReservations.get(date).tourists.name}"
-								th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
-						</span> <span
-							th:if="${apartment.apartmentReservations.get(date) == null}">
-								prazno </span></td>
-					</tr>
-					</span>
-
-				</div>
-
-				<div th:if="${date.dayOfWeek.name() == 'SATURDAY'}">
-					<span>
-						<tr class="bg-info">
+						<tr>
 							<th scope="row"
-								th:text="${#temporals.format(date, 'dd.MM.yyyy')}  + ' SUB'">datum
-								SUB</th>
-							<td th:each="apartment : ${apartments}"><span
-								th:if="${apartment.apartmentReservations.get(date)} != null">
-									<a class="bg-primary text-white"
-									th:text="${apartment.apartmentReservations.get(date).tourists.name}"
-									th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
-								</a>
-							</span> <span
-								th:if="${apartment.apartmentReservations.get(date) == null}">
-									prazno </span></td>
-						</tr>
-					</span>
-				</div>
-				<div th:if="${date.dayOfWeek.name() == 'SUNDAY'}">
-					<span>
-						<tr class="bg-danger">
-							<th scope="row"
-								th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' NED'">datum
-								NED</th>
+								th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' SRI'">datum
+								SRI</th>
 							<td th:each="apartment : ${apartments}"><span
 								th:if="${apartment.apartmentReservations.get(date)} != null">
 									<a
 									th:text="${apartment.apartmentReservations.get(date).tourists.name}"
 									th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
-								</a>
-							</span><span
-								th:if="${apartment.apartmentReservations.get(date) == null}"
-								th:text="'prazno'"> prazno </span></td>
+							</span> <span
+								th:if="${apartment.apartmentReservations.get(date) == null}">
+									prazno </span></td>
 						</tr>
-					</span>
-				</div>
+						</span>
+
+					</div>
+
+					<div th:if="${date.dayOfWeek.name() == 'THURSDAY'}">
+						<tr>
+							<th scope="row"
+								th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' ČET'">datum
+								ČET</th>
+							<td th:each="apartment : ${apartments}"><span
+								th:if="${apartment.apartmentReservations.get(date)} != null">
+									<a
+									th:text="${apartment.apartmentReservations.get(date).tourists.name}"
+									th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+							</span> <span
+								th:if="${apartment.apartmentReservations.get(date) == null}">
+									prazno </span></td>
+						</tr>
+						</span>
+
+					</div>
+
+					<div th:if="${date.dayOfWeek.name() == 'FRIDAY'}">
+						<tr>
+							<th scope="row"
+								th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' PET'">datum
+								PET</th>
+							<td th:each="apartment : ${apartments}"><span
+								th:if="${apartment.apartmentReservations.get(date)} != null">
+									<a
+									th:text="${apartment.apartmentReservations.get(date).tourists.name}"
+									th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+							</span> <span
+								th:if="${apartment.apartmentReservations.get(date) == null}">
+									prazno </span></td>
+						</tr>
+						</span>
+
+					</div>
+
+					<div th:if="${date.dayOfWeek.name() == 'SATURDAY'}">
+						<span>
+							<tr class="bg-primary">
+								<th scope="row"
+									th:text="${#temporals.format(date, 'dd.MM.yyyy')}  + ' SUB'">datum
+									SUB</th>
+								<td th:each="apartment : ${apartments}"><span
+									th:if="${apartment.apartmentReservations.get(date)} != null">
+										<a class="bg-primary text-white"
+										th:text="${apartment.apartmentReservations.get(date).tourists.name}"
+										th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+									</a>
+								</span> <span
+									th:if="${apartment.apartmentReservations.get(date) == null}">
+										prazno </span></td>
+							</tr>
+						</span>
+					</div>
+					<div th:if="${date.dayOfWeek.name() == 'SUNDAY'}">
+						<span>
+							<tr class="bg-danger">
+								<th scope="row"
+									th:text="${#temporals.format(date, 'dd.MM.yyyy')} + ' NED'">datum
+									NED</th>
+								<td th:each="apartment : ${apartments}"><span
+									th:if="${apartment.apartmentReservations.get(date)} != null">
+										<a
+										th:text="${apartment.apartmentReservations.get(date).tourists.name}"
+										th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+									</a>
+								</span><span
+									th:if="${apartment.apartmentReservations.get(date) == null}"
+									th:text="'prazno'"> prazno </span></td>
+							</tr>
+						</span>
+					</div>
 				</div>
 			</tbody>
 		</table>
