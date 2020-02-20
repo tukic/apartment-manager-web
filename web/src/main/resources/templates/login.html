@@ -17,7 +17,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+	<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
 		<a class="navbar-brand" href="reserved-dates">Apartmani Ukić</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
@@ -27,42 +27,34 @@
 
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			<ul class="navbar-nav">
-				<li class="nav-item"><a class="nav-link"
-					href="reserved-dates">Pregled</a>
+				<li class="nav-item"><a class="nav-link" href="reserved-dates">Pregled</a>
 				</li>
 
 				<li class="nav-item"><a class="nav-link" href="#">Rezervacije</a>
 				</li>
 				<li class="nav-item"><a class="nav-link" href="#">Turisti</a></li>
 			</ul>
-		</div>
-		<div class="collapse navbar-collapse justify-content-end"
-			id="navbarCollapse">
-			<ul class="navbar-nav">
-				<li class="nav-item">
-			<a class="nav-link active" href="login" th:if="${user == 'Neregistrirani korisnik'}">Prijava
-			<span class="sr-only">(current)</span></a>
-				</li>
+			<div class="dropdown-divider"></div>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item"><a class="nav-link active" 
+				href="login">Prijava<span
+						class="sr-only">(current)</span></a></li>
 			</ul>
 		</div>
 	</nav>
 
 
 	<div class="container">
-		<form method="post" action="login"
-		name="loginForm" modelAttribute="login">
+		<form method="post" action="login" name="loginForm"
+			modelAttribute="login">
 			<div class="col">
 				<div class="row">
-					<label for="loginName">Korisničko ime</label> <input
-						type="text" class="form-control" id="loginName"
-						placeholder="" 
-						name="username">
+					<label for="loginName">Korisničko ime</label> <input type="text"
+						class="form-control" id="loginName" placeholder="" name="username">
 				</div>
 				<div class="row">
-					<label for="userPassword">Lozinka</label> <input
-						type="password"
-						class="form-control" id="userPassword"
-						name="password">
+					<label for="userPassword">Lozinka</label> <input type="password"
+						class="form-control" id="userPassword" name="password">
 				</div>
 
 			</div>

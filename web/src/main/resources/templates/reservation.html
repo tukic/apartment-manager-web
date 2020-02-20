@@ -35,13 +35,11 @@
 				</li>
 				<li class="nav-item"><a class="nav-link" href="#">Turisti</a></li>
 			</ul>
-		</div>
-		<div class="collapse navbar-collapse justify-content-end"
-			id="navbarCollapse">
-			<ul class="navbar-nav">
+			<div class="dropdown-divider"></div>
+			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
-			<a class="nav-link" href="login" th:if="${user == 'Neregistrirani korisnik'}">Neregistrirani korisnik<br><center>(Prijava)</center></a>
-			<a class="nav-link" href="logout" th:if="${user != 'Neregistrirani korisnik'}" th:inline="text">[[${user}]]<br><center>(Odjava)</center></a>
+			<a class="nav-link" href="login" th:if="${user == 'Neregistrirani korisnik'}">Neregistrirani korisnik<br>(Prijava)</a>
+			<a class="nav-link" href="logout" th:if="${user != 'Neregistrirani korisnik'}" th:inline="text">[[${user}]]<br>(Odjava)</a>
 				</li>
 			</ul>
 		</div>
