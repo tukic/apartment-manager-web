@@ -1,0 +1,233 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+	crossorigin="anonymous">
+
+<title>Getting Started: Serving Web Content</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+
+<div class="container">
+	<form 
+		method="post"
+		action="reservation"
+		modelAttribute="reservation">
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="exampleFormControlInput1">Ime Gosta</label> <input
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
+					th:value="${reservation.tourists.name}"
+					name="name">
+			</div>
+			<div class="form-group col-md-6">
+				<label for="exampleFormControlSelect1">Apartman</label> <select
+					class="form-control" id="exampleFormControlSelect1"
+					name="apartmentName">
+					<option th:each="apartment : ${apartments}" th:value="${apartment.apartmentName}"
+						th:text="${apartment.apartmentName}"
+						th:selected="${apartment.apartmentId==reservation.apartment.apartmentId}">
+					</option>
+				</select>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="datepicker">Datum dolaska</label> <input
+					type="date" id="datepicker"  class="form-control" size='9'
+					th:value="${reservation.checkInDate}" 
+					name="checkInDate">
+			</div>
+			<div class="form-group col-md-6">
+				<label for="exampleFormControlInput1">Broj osoba</label> <input
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
+					th:value="${reservation.tourists.numberOfPersons}"
+					name="persons">
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="datepicker2">Datum odlaska</label> <input
+					type="date" id="datepicker2" class="form-control" size='9'
+					th:value="${reservation.checkOutDate}" 
+					name="checkOutDate">
+			</div>
+			<div class="form-group col-md-6">
+				<label for="exampleFormControlInput1">Broj odraslih</label> <input
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
+					th:value="${reservation.tourists.numberOfAdults}"
+					name="adults">
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="exampleFormControlInput1">Cijena po noći</label> <input
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder="" th:value="${#numbers.formatDecimal(reservation.pricePerNight, 1, 'POINT', 2, 'COMMA')}"
+					name="pricePerNight">
+			</div>
+			<div class="form-group col-md-6">
+				<label for="exampleFormControlInput1">Broj djece</label> <input
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
+					th:value="${reservation.tourists.numberOfChildren}"
+					name="children">
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="form-group col-md-3">
+				<div class="custom-control custom-checkbox">
+					<label class="btn btn-default active"> <input
+						th:if="${reservation.advancedPayment > 0}" type="checkbox"
+						checked="checked"
+						value="on"
+						name="advancedPaymentPaid"> <input
+						th:if="${reservation.advancedPayment == 0}" type="checkbox"
+						name="advancedPaymentPaid">
+						Uplaćena akontacija
+
+					</label>
+
+				</div>
+			</div>
+
+			<div class="form-group col-md-3">
+
+				<div class="form-group">
+					<label for="exampleFormControlSelect1">Valuta akontacije</label> <select
+						class="form-control" id="exampleFormControlSelect1"
+						name="advancedPaymentCurrency">
+						<option th:if="${reservation.advPayCurrency == 'EUR'}" selected>EUR</option>
+						<option th:if="${reservation.advPayCurrency == 'HRK'}" selected>HRK</option>
+						<option th:if="${reservation.advPayCurrency != 'EUR'}">EUR</option>
+						<option th:if="${reservation.advPayCurrency != 'HRK'}">HRK</option>
+					</select>
+				</div>
+
+			</div>
+
+			<div class="form-group col-md-6">
+				<label for="exampleFormControlInput1">Grad</label> <input
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
+					th:value="${reservation.tourists.city}"
+					name="city">
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="exampleFormControlInput1">Iznos akontacije</label> <input
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder="" th:value="${#numbers.formatDecimal(reservation.advancedPayment, 1, 'POINT', 2, 'COMMA')}"
+					name="advancedPaymentAmount">
+			</div>
+
+			<div class="form-group col-md-6">
+				<label for="exampleFormControlInput1">Država</label> <input
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
+					th:value="${reservation.tourists.country}"
+					name="country">
+			</div>
+
+		</div>
+
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="exampleFormControlInput1">Ukupna cijena</label> <input
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder="" th:value="${#numbers.formatDecimal(reservation.totalPrice, 1, 'POINT', 2, 'COMMA')}"
+					name="totalPrice">
+			</div>
+
+			<div class="form-group col-md-6">
+				<label for="exampleFormControlInput1">E-mail</label> <input
+					type="email" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
+					th:value="${reservation.tourists.email}"
+					name="email">
+			</div>
+		</div>
+
+		<div class="row justify-content-end">
+			<div class="form-group col-md-6">
+
+				<label for="exampleFormControlInput1">Broj telefona</label> <input
+					type="text" class="form-control" id="exampleFormControlInput1"
+					placeholder=""
+					th:value="${reservation.tourists.phoneNumber}"
+					name="phone">
+			</div>
+		</div>
+
+		<div class="row justify-content-end">
+			<div class="form-group col-md-6">
+
+								<div class="custom-control custom-checkbox">
+					<label class="btn btn-default active"> 
+					<input
+						th:if="${reservation.tourists.pets}" type="checkbox"
+						checked="checked"
+						value="on"
+						name="pets"> 
+						<input
+						th:unless="${reservation.tourists.pets}" type="checkbox"
+						name="pets">
+						Životinje
+
+					</label>
+
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="form-group col-md-12">
+				<label for="exampleFormControlInput1">Bilješke</label> <textarea
+					class="form-control" id="exampleFormControlInput1"
+					rows="4"
+					th:inline="text"
+					name="notes">[[${reservation.tourists.touristsNote}]]</textarea>
+			</div>
+		</div>
+		
+		<div class="formControls">
+								<button type="submit" class="btn btn-primary" name="save">Spremi</button>
+							</div>
+		
+
+	</form>
+</div>
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+		integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+		integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+		crossorigin="anonymous"></script>
+	<script
+		src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+		integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+		crossorigin="anonymous"></script>
+
+</body>
+</html>

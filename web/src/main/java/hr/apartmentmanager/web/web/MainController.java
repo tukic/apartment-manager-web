@@ -10,9 +10,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +44,7 @@ public class MainController {
 	
 	@Autowired
 	private TouristsRepository touristsRepository;
+	
 
 	@PostMapping(path = "/add") // Map ONLY POST Requests
 	public @ResponseBody String addNewReservation(@RequestParam int reservationId, @RequestParam LocalDate checkInDate,
@@ -156,14 +161,37 @@ public class MainController {
 		}
 		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println(auth.getPrincipal());
+		String user = (auth == null || auth.getName().equals("anonymousUser")) ?
+				"Neregistrirani korisnik" : auth.getName(); 
 		
 		Reservation reservation = reservationOpt.get();
 		ModelAndView mav = new ModelAndView("reservation");
+		mav.addObject("user", user);
 		mav.addObject("apartments", apartmentRepository.findAll());
 		mav.addObject("reservation", reservation);
 		return mav;
 	}
+	
+	/*
+	
+	
+	@GetMapping(path = "/logout")
+	public RedirectView logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();  
+        if (auth != null){      
+           new SecurityContextLogoutHandler().logout(request, response, auth);  
+        }  
+		return new RedirectView("reserved-dates");
+	}
+
+	*/
+	
+	
+	@GetMapping(path = "/login")
+	public ModelAndView login() {
+		return new ModelAndView("login");
+	}
+	
 	
 	@GetMapping(path = "/reserved-dates")
 	public ModelAndView getReservedDates(@RequestParam(required = false) Integer month
@@ -199,10 +227,15 @@ public class MainController {
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 		int[] years = {currentYear-1, currentYear, currentYear+1}; 
 		
+		
+		
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		System.out.println(auth.getPrincipal());
+		String user = (auth == null || auth.getName().equals("anonymousUser")) ?
+				"Neregistrirani korisnik" : auth.getName(); 
+
 		
 		ModelAndView mav = new ModelAndView();
+		mav.addObject("user", user);
 		mav.addObject("yearsInt", years);
 		mav.addObject("monthsInt", months);
 		mav.addObject("apartments", apartments);
@@ -210,6 +243,7 @@ public class MainController {
         mav.setViewName("reserved-dates");
 		return mav;
 	}
+	
 
 	@GetMapping(path = "/all-reservations")
 	public @ResponseBody Iterable<Reservation> getAllReservatiosn() {
