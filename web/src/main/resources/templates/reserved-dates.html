@@ -46,7 +46,7 @@ th {
 }
 </style>
 
-<title>Getting Started: Serving Web Content</title>
+<title>Kalendar</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -76,9 +76,9 @@ th {
 						</div>
 					</div></li>
 
-				<li class="nav-item"><a class="nav-link" href="#">Rezervacije</a>
+				<li class="nav-item"><a class="nav-link" href="reservations">Rezervacije</a>
 				</li>
-				<li class="nav-item"><a class="nav-link" href="#">Turisti</a></li>
+				<li class="nav-item"><a class="nav-link" href="apartments">Apartmani</a></li>
 			</ul>
 			<div class="dropdown-divider"></div>
 			<ul class="navbar-nav ml-auto">
@@ -114,7 +114,7 @@ th {
 									th:if="${apartment.apartmentReservations.get(date)} != null">
 										<a
 										th:text="${apartment.apartmentReservations.get(date).tourists.name}"
-										th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+										th:href="'reservations/'+${apartment.apartmentReservations.get(date).reservationId}">
 								</span> <span
 									th:if="${apartment.apartmentReservations.get(date) == null}">
 										prazno </span></td>
@@ -132,7 +132,7 @@ th {
 									th:if="${apartment.apartmentReservations.get(date)} != null">
 										<a
 										th:text="${apartment.apartmentReservations.get(date).tourists.name}"
-										th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+										th:href="'reservations/'+${apartment.apartmentReservations.get(date).reservationId}">
 								</span> <span
 									th:if="${apartment.apartmentReservations.get(date) == null}">
 										prazno </span></td>
@@ -150,7 +150,7 @@ th {
 								th:if="${apartment.apartmentReservations.get(date)} != null">
 									<a
 									th:text="${apartment.apartmentReservations.get(date).tourists.name}"
-									th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+									th:href="'reservations/'+${apartment.apartmentReservations.get(date).reservationId}">
 							</span> <span
 								th:if="${apartment.apartmentReservations.get(date) == null}">
 									prazno </span></td>
@@ -168,7 +168,7 @@ th {
 								th:if="${apartment.apartmentReservations.get(date)} != null">
 									<a
 									th:text="${apartment.apartmentReservations.get(date).tourists.name}"
-									th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+									th:href="'reservations/'+${apartment.apartmentReservations.get(date).reservationId}">
 							</span> <span
 								th:if="${apartment.apartmentReservations.get(date) == null}">
 									prazno </span></td>
@@ -186,7 +186,7 @@ th {
 								th:if="${apartment.apartmentReservations.get(date)} != null">
 									<a
 									th:text="${apartment.apartmentReservations.get(date).tourists.name}"
-									th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+									th:href="'reservations/'+${apartment.apartmentReservations.get(date).reservationId}">
 							</span> <span
 								th:if="${apartment.apartmentReservations.get(date) == null}">
 									prazno </span></td>
@@ -205,7 +205,7 @@ th {
 									th:if="${apartment.apartmentReservations.get(date)} != null">
 										<a class="bg-primary text-white"
 										th:text="${apartment.apartmentReservations.get(date).tourists.name}"
-										th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+										th:href="'reservations/'+${apartment.apartmentReservations.get(date).reservationId}">
 									</a>
 								</span> <span
 									th:if="${apartment.apartmentReservations.get(date) == null}">
@@ -223,7 +223,7 @@ th {
 									th:if="${apartment.apartmentReservations.get(date)} != null">
 										<a
 										th:text="${apartment.apartmentReservations.get(date).tourists.name}"
-										th:href="'reservation?id='+${apartment.apartmentReservations.get(date).reservationId}">
+										th:href="'reservations/'+${apartment.apartmentReservations.get(date).reservationId}">
 									</a>
 								</span><span
 									th:if="${apartment.apartmentReservations.get(date) == null}"

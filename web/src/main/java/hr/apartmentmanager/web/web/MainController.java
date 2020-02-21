@@ -10,16 +10,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -67,8 +63,9 @@ public class MainController {
 	}
 	
 	
-	@PostMapping(path = "/reservation")
+	@PostMapping(path = "/reservations/{id}")
 	public RedirectView  getReservation(
+			@PathVariable(required = true) Long id,
 			@RequestParam("name") String touristsName,
 			@RequestParam("apartmentName") String apartmentName,
 			@RequestParam("checkInDate") String checkInDate,
@@ -150,9 +147,22 @@ public class MainController {
 		return new RedirectView("error");
 	}
 	
-	@GetMapping(path = "/reservation")
+	@GetMapping(path = "/reservations")
+	public ModelAndView getReservation() {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String user = (auth == null || auth.getName().equals("anonymousUser")) ?
+				"Neregistrirani korisnik" : auth.getName(); 
+	
+		ModelAndView mav = new ModelAndView("reservations");
+		mav.addObject("user", user);
+		mav.addObject("reservations", reservationRepository.findAll());
+		return mav;
+	}
+	
+	@GetMapping(path = "/reservations/{id}")
 	public ModelAndView getReservation(
-			@RequestParam(required = true) Long id) {
+			@PathVariable(required = true) Long id) {
 		
 		Optional<Reservation> reservationOpt = reservationRepository.findById(id);
 
@@ -228,11 +238,7 @@ public class MainController {
 		int[] years = {currentYear-1, currentYear, currentYear+1}; 
 		
 		
-		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		String user = (auth == null || auth.getName().equals("anonymousUser")) ?
-				"Neregistrirani korisnik" : auth.getName(); 
-
+		String user = getUserName();
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("user", user);
@@ -243,7 +249,29 @@ public class MainController {
         mav.setViewName("reserved-dates");
 		return mav;
 	}
+
+	@GetMapping(path = "/apartments")
+	public ModelAndView getApartments() {
+		
+		ModelAndView mav = new ModelAndView("apartments");
+		mav.addObject("user", getUserName());
+		mav.addObject("apartments", apartmentRepository.findAll());
+		
+		return mav;
+	}
 	
+	@GetMapping(path = "/apartments/{id}")
+	public ModelAndView getApartment(
+			@PathVariable(required = true) Integer id) {
+		
+		Apartment apartment = apartmentRepository.findById(id).get();
+		
+		ModelAndView mav = new ModelAndView("apartment");
+		mav.addObject("user", getUserName());
+		mav.addObject("apartment", apartment);
+		
+		return mav;
+	}
 
 	@GetMapping(path = "/all-reservations")
 	public @ResponseBody Iterable<Reservation> getAllReservatiosn() {
@@ -251,6 +279,7 @@ public class MainController {
 		return reservationRepository.findAll();
 	}
 	
+	/*
 	@GetMapping("/apartments")
 	public String apart(@RequestParam(name = "name", required = false, defaultValue = "World") String name,
 			Model model) {
@@ -261,6 +290,13 @@ public class MainController {
 		}
 		model.addAttribute("name", name);
 		return "reservations";
+	}
+	*/
+	
+	private String getUserName() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		return (auth == null || auth.getName().equals("anonymousUser")) ?
+				"Neregistrirani korisnik" : auth.getName(); 
 	}
 	
 	public static List<LocalDate> getDatesBetweenUsingJava8(

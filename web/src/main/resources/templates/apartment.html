@@ -12,7 +12,7 @@
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
 
-<title>Prijava</title>
+<title th:text="${apartment.apartmentName}">Ime</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -36,33 +36,62 @@
 			</ul>
 			<div class="dropdown-divider"></div>
 			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a class="nav-link active" 
-				href="/demo/login">Prijava<span
-						class="sr-only">(current)</span></a></li>
+				<li class="nav-item"><a class="nav-link" href="/demo/login"
+					th:if="${user == 'Neregistrirani korisnik'}">Neregistrirani
+						korisnik<br>(Prijava)
+				</a> <a class="nav-link" href="/demo/logout"
+					th:if="${user != 'Neregistrirani korisnik'}" th:inline="text">[[${user}]]<br>(Odjava)
+				</a></li>
 			</ul>
 		</div>
 	</nav>
 
 
+
 	<div class="container">
-		<form method="post" action="login" name="loginForm"
-			modelAttribute="login">
-			<div class="col">
-				<div class="row">
-					<label for="loginName">Korisničko ime</label> <input type="text"
-						class="form-control" id="loginName" placeholder="" name="username">
+		<form method="post" action="apartment" name="mainForm"
+			modelAttribute="apartment">
+			<div class="row">
+				<div class="form-group col-md-6">
+					<label for="apartmentNameInput">Naziv apartmana</label> <input
+						type="text" class="form-control" id="apartmentNameInput"
+						placeholder="" th:value="${apartment.apartmentName}" name="name">
+				</div>
+					<div class="form-group col-md-6">
+						<label for="apartmentInternalNameInput">Interni naziv apartmana</label> <input
+							type="text" class="form-control" id="apartmentInternalNameInput"
+							placeholder="" th:value="${apartment.internalName}" name="internalName">
+					</div>
+
 				</div>
 				<div class="row">
-					<label for="userPassword">Lozinka</label> <input type="password"
-						class="form-control" id="userPassword" name="password">
+					<div class="form-group col-md-6">
+						<label for="baseCapacityInput">Osnovni kapacitet</label> <input
+							type="text" class="form-control" id="baseCapacityInput"
+							placeholder="" th:value="${apartment.baseCapacity}" name="internalName">
+					</div>
+					<div class="form-group col-md-6">
+						<label for="additionalCapacityInput">Dodatni kapacitet</label> <input
+							type="text" class="form-control" id="additionalCapacityInput"
+							placeholder="" th:value="${apartment.additionalCapacity}" name="internalName">
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-md-12">
+						<label for="notesInput">Bilješke</label>
+						<textarea class="form-control" id="notesInput"
+							rows="4" th:inline="text" name="notes">[[${apartment.apartmentNote}]]</textarea>
+					</div>
 				</div>
 
-			</div>
-
-			<div class="formControls">
-				<button type="submit" class="btn btn-outline-success" name="signIn"
-					id="signInBtn">Prijavi se</button>
-			</div>
+				<div class="formControls">
+					<button type="submit" class="btn btn-outline-success" name="save"
+						id="saveBtn" disabled>Spremi</button>
+					<button type="button" class="btn btn-outline-secondary" name="edit"
+						id="editBtn" onclick="enableSaveBtn()">Uredi</button>
+					<button type="submit" class="btn btn-outline-danger" name="discard"
+						id="discardBtn" disabled>Odbaci</button>
+				</div>
 		</form>
 	</div>
 

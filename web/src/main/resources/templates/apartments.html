@@ -12,7 +12,8 @@
 	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
 	crossorigin="anonymous">
 
-<title>Prijava</title>
+
+<title>Apartmani</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
@@ -30,60 +31,42 @@
 				<li class="nav-item"><a class="nav-link" href="/demo/reserved-dates">Pregled</a>
 				</li>
 
-				<li class="nav-item"><a class="nav-link" href="/demo/reservations">Rezervacije</a>
-				</li>
-				<li class="nav-item"><a class="nav-link" href="/demo/apartments">Apartmani</a></li>
+				<li class="nav-item"><a class="nav-link"
+					href="/demo/reservations">Rezervacije
+				</a></li>
+				<li class="nav-item"><a class="nav-link active" href="/demo/apartments">Apartmani
+				<span class="sr-only">(current)</span>
+				</a></li>
 			</ul>
 			<div class="dropdown-divider"></div>
 			<ul class="navbar-nav ml-auto">
-				<li class="nav-item"><a class="nav-link active" 
-				href="/demo/login">Prijava<span
-						class="sr-only">(current)</span></a></li>
+				<li class="nav-item"><a class="nav-link" href="/demo/login"
+					th:if="${user == 'Neregistrirani korisnik'}">Neregistrirani
+						korisnik<br>(Prijava)
+				</a> <a class="nav-link" href="/demo/logout"
+					th:if="${user != 'Neregistrirani korisnik'}" th:inline="text">[[${user}]]<br>(Odjava)
+				</a></li>
 			</ul>
 		</div>
 	</nav>
 
 
 	<div class="container">
-		<form method="post" action="login" name="loginForm"
-			modelAttribute="login">
-			<div class="col">
-				<div class="row">
-					<label for="loginName">Korisničko ime</label> <input type="text"
-						class="form-control" id="loginName" placeholder="" name="username">
-				</div>
-				<div class="row">
-					<label for="userPassword">Lozinka</label> <input type="password"
-						class="form-control" id="userPassword" name="password">
-				</div>
+		<div class="list-group" th:each="apartment : ${apartments}">
+			<a
+				class="list-group-item list-group-item-action list-group-item-light"
+				th:text="${apartment.ApartmentName}
+				  + ' ' + ${apartment.InternalName}
+				  + ' ' + ${apartment.baseCapacity}
+				  + '+' + ${apartment.additionalCapacity}"
+				th:href="'apartments/'+${apartment.apartmentId}">Cras
+				justo odio</a>
 
-			</div>
-
-			<div class="formControls">
-				<button type="submit" class="btn btn-outline-success" name="signIn"
-					id="signInBtn">Prijavi se</button>
-			</div>
-		</form>
+		</div>
 	</div>
 
-	<script type="text/javascript">
 
-    function enableSaveBtn() {
-        document.getElementById("saveBtn").disabled = false;
-        document.getElementById("discardBtn").disabled = false;
-        document.getElementById("editBtn").disabled = true;
-        var f = document.forms['mainForm'];
-        for(var i=0,fLen=f.length;i<fLen;i++){
-          f.elements[i].readOnly = false;//As @oldergod noted, the "O" must be upper case
-        }
-    }
-    
-    var f = document.forms['mainForm'];
-    for(var i=0,fLen=f.length;i<fLen;i++){
-      f.elements[i].readOnly = true;//As @oldergod noted, the "O" must be upper case
-    }
-
-</script>
+	</script>
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->

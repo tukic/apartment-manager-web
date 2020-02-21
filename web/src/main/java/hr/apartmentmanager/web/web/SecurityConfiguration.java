@@ -24,7 +24,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
  
         http.csrf().disable()
          .authorizeRequests()
-         .antMatchers("/demo/reservation**").authenticated()
+         .antMatchers("/demo/reservations*").authenticated()
+         .and().authorizeRequests().antMatchers("/demo/reservations/*").authenticated()
          //.and().httpBasic()
          //.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
          .and()
