@@ -19,7 +19,7 @@
 <body>
 
 	<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
-		<a class="navbar-brand" href="reserved-dates">Apartmani Ukić</a>
+		<a class="navbar-brand" href="/demo/reserved-dates">Apartmani Ukić</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
 			aria-expanded="false" aria-label="Toggle navigation">
@@ -31,9 +31,16 @@
 				<li class="nav-item"><a class="nav-link" href="reserved-dates">Pregled</a>
 				</li>
 
-				<li class="nav-item"><a class="nav-link active"
-					href="reservations">Rezervacije<span class="sr-only">(current)</span>
-				</a></li>
+				<li class="nav-item dropdown active"><a
+					class="nav-link dropdown-toggle" href="reservations"
+					id="navbarDropdown" role="button" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"> Rezervacije </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/demo/reservations">Rezervacije</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/demo/reservations/new">Nova
+							rezervacija</a>
+					</div></li>
 				<li class="nav-item"><a class="nav-link" href="apartments">Apartmani</a></li>
 			</ul>
 			<div class="dropdown-divider"></div>
@@ -77,6 +84,8 @@
 				justo odio</a>
 
 		</div>
+		
+		<a href="/demo/reservations/new" class="btn btn-primary btn-lg" role="button">Nova rezervacija</a>
 	</div>
 
 

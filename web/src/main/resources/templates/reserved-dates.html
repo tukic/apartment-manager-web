@@ -76,16 +76,28 @@ th {
 						</div>
 					</div></li>
 
-				<li class="nav-item"><a class="nav-link" href="reservations">Rezervacije</a>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="reservations"
+					id="navbarDropdown" role="button" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"> Rezervacije </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/demo/reservations">Rezervacije</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/demo/reservations/new">Nova rezervacija</a>
+					</div>
 				</li>
-				<li class="nav-item"><a class="nav-link" href="apartments">Apartmani</a></li>
-			</ul>
+
+				<li class="nav-item">
+			<a class="nav-link" href="apartments">Apartmani</a>
+				</li></ul>
 			<div class="dropdown-divider"></div>
 			<ul class="navbar-nav ml-auto">
-				<li class="nav-item">
-			<a class="nav-link" href="login" th:if="${user == 'Neregistrirani korisnik'}">Neregistrirani korisnik<br>(Prijava)</a>
-			<a class="nav-link" href="logout" th:if="${user != 'Neregistrirani korisnik'}" th:inline="text">[[${user}]]<br>(Odjava)</a>
-				</li>
+				<li class="nav-item"><a class="nav-link" href="login"
+					th:if="${user == 'Neregistrirani korisnik'}">Neregistrirani
+						korisnik<br>(Prijava)
+				</a> <a class="nav-link" href="logout"
+					th:if="${user != 'Neregistrirani korisnik'}" th:inline="text">[[${user}]]<br>(Odjava)
+				</a></li>
 			</ul>
 		</div>
 	</nav>

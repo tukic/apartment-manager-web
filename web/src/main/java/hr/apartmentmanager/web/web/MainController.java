@@ -1,12 +1,15 @@
 package hr.apartmentmanager.web.web;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -292,6 +295,109 @@ public class MainController {
 		return "reservations";
 	}
 	*/
+	
+	@GetMapping(path="/reservations/new")
+	private ModelAndView newReservation() {
+		
+		ModelAndView mav = new ModelAndView("new-reservation");
+		mav.addObject("user", getUserName());
+		mav.addObject("apartments", apartmentRepository.findAll());
+		
+		return mav;
+	}
+	
+	@PostMapping(path="/reservations/new")
+	private RedirectView saveNewReservation(
+			@RequestParam("name") String touristsName,
+			@RequestParam("apartmentId") String apartmentId,
+			@RequestParam("checkInDate") String checkInDate,
+			@RequestParam(name = "persons", required = false) String numberOfPersons,
+			@RequestParam("checkOutDate") String checkOutDate,
+			@RequestParam(name = "adults", required = false) String numberOfAdults,
+			@RequestParam("pricePerNight") String pricePerNight,
+			@RequestParam(name = "children", required = false) String numberOfChildren,
+			@RequestParam(name = "advancedPaymentPaid", required = false) String advancedPaymentPaid,
+			@RequestParam(name = "advancedPaymentCurrency", required = false) String advancedPaymentCurrency,
+			@RequestParam(name = "city", required = false) String city,
+			@RequestParam(name = "advancedPaymentAmount", required = false) String advancedPaymentAmount,
+			@RequestParam(name = "country", required = false) String country,
+			@RequestParam(name = "totalPrice", required = true) String totalPrice,
+			@RequestParam(name = "email", required = false) String email,
+			@RequestParam(name = "phone", required = false) String phone,
+			@RequestParam(name = "pets", required = false) String pets,
+			@RequestParam(name = "notes", required = false) String notes) {
+		
+		if(advancedPaymentPaid==null)
+			advancedPaymentPaid="no";
+		if(pets==null)
+			pets="no";
+		boolean petsBool = pets.equals("no") ? false : true;
+		
+		Integer numberOfPersonsInt, numberOfAdultsInt, numberOfChildrenInt;
+		try {
+			numberOfPersonsInt = Integer.valueOf(numberOfPersons); 
+		} catch (NumberFormatException exception) {
+			numberOfPersonsInt = null;
+		}
+		try {
+			numberOfAdultsInt = Integer.valueOf(numberOfAdults);
+		} catch (NumberFormatException exception) {
+			numberOfAdultsInt = null;
+		}
+		try {
+			numberOfChildrenInt = Integer.valueOf(numberOfChildren); 
+		} catch (NumberFormatException exception) {
+			numberOfChildrenInt = null;
+		}
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate checkInDateLD = LocalDate.parse(checkInDate, formatter);
+		LocalDate checkOutDateLD = LocalDate.parse(checkOutDate, formatter);
+		
+		BigDecimal pricePerNightBD, totalPriceBD, advancedPaymentAmountBD;
+		try {
+			pricePerNightBD = new BigDecimal(pricePerNight);
+		} catch (NumberFormatException exception) {
+			pricePerNightBD = null;
+		}
+		try {
+			totalPriceBD = new BigDecimal(totalPrice);
+		} catch (NumberFormatException exception) {
+			totalPriceBD = pricePerNightBD.multiply(new BigDecimal(
+					ChronoUnit.DAYS.between(checkInDateLD, checkOutDateLD)));
+		}
+		try {
+			advancedPaymentAmountBD = 
+					new BigDecimal(advancedPaymentAmount);
+		} catch (NumberFormatException exception) {
+			advancedPaymentAmountBD = null;
+		}
+		
+		Tourists tourists = new Tourists(touristsName, country, city,
+				numberOfAdultsInt, numberOfChildrenInt
+				, numberOfPersonsInt, email, phone, petsBool, notes);
+		touristsRepository.save(tourists);
+		
+		Apartment apartment = apartmentRepository.findById(new Integer(apartmentId)).get();
+		
+		Reservation reservation = 
+				new Reservation(tourists
+						, apartment
+						, checkInDateLD.plusDays(1)		// must to add 1 day due to unknown problem
+						, checkOutDateLD.plusDays(1)	
+						//, BigDecimal.valueOf(Double.parseDouble(pricePerNight))
+						, pricePerNightBD
+						//, BigDecimal.valueOf(Double.parseDouble(totalPrice))
+						, totalPriceBD
+						, ReservationStatus.reservation
+						//, BigDecimal.valueOf(Double.parseDouble(advancedPaymentAmount))
+						, advancedPaymentAmountBD
+						, advancedPaymentCurrency);
+		
+		reservationRepository.save(reservation);
+		
+		return new RedirectView("/demo/reserved-dates");
+	}
 	
 	private String getUserName() {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();

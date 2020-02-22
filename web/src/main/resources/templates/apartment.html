@@ -18,7 +18,7 @@
 <body>
 
 	<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
-		<a class="navbar-brand" href="reserved-dates">Apartmani Ukić</a>
+		<a class="navbar-brand" href="/demo/reserved-dates">Apartmani Ukić</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
 			aria-expanded="false" aria-label="Toggle navigation">
@@ -30,7 +30,15 @@
 				<li class="nav-item"><a class="nav-link" href="/demo/reserved-dates">Pregled</a>
 				</li>
 
-				<li class="nav-item"><a class="nav-link" href="/demo/reservations">Rezervacije</a>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="reservations"
+					id="navbarDropdown" role="button" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"> Rezervacije </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/demo/reservations">Rezervacije</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/demo/reservations/new">Nova rezervacija</a>
+					</div>
 				</li>
 				<li class="nav-item"><a class="nav-link" href="/demo/apartments">Apartmani</a></li>
 			</ul>

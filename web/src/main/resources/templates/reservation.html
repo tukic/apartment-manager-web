@@ -17,8 +17,8 @@
 </head>
 <body>
 
-<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
-		<a class="navbar-brand" href="reserved-dates">Apartmani Ukić</a>
+	<nav class="navbar navbar-dark bg-primary navbar-expand-lg">
+		<a class="navbar-brand" href="/demo/reserved-dates">Apartmani Ukić</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
 			aria-expanded="false" aria-label="Toggle navigation">
@@ -28,19 +28,29 @@
 		<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link"
-					href="/demo/reserved-dates">Pregled</a>
-				</li>
+					href="/demo/reserved-dates">Pregled</a></li>
 
-				<li class="nav-item"><a class="nav-link" href="/demo/reservations">Rezervacije</a>
-				</li>
-				<li class="nav-item"><a class="nav-link" href="/demo/apartments">Apartmani</a></li>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="reservations"
+					id="navbarDropdown" role="button" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"> Rezervacije </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="/demo/reservations">Rezervacije</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="/demo/reservations/new">Nova
+							rezervacija</a>
+					</div></li>
+				<li class="nav-item"><a class="nav-link"
+					href="/demo/apartments">Apartmani</a></li>
 			</ul>
 			<div class="dropdown-divider"></div>
 			<ul class="navbar-nav ml-auto">
-				<li class="nav-item">
-			<a class="nav-link" href="/demo/login" th:if="${user == 'Neregistrirani korisnik'}">Neregistrirani korisnik<br>(Prijava)</a>
-			<a class="nav-link" href="/demo/logout" th:if="${user != 'Neregistrirani korisnik'}" th:inline="text">[[${user}]]<br>(Odjava)</a>
-				</li>
+				<li class="nav-item"><a class="nav-link" href="/demo/login"
+					th:if="${user == 'Neregistrirani korisnik'}">Neregistrirani
+						korisnik<br>(Prijava)
+				</a> <a class="nav-link" href="/demo/logout"
+					th:if="${user != 'Neregistrirani korisnik'}" th:inline="text">[[${user}]]<br>(Odjava)
+				</a></li>
 			</ul>
 		</div>
 	</nav>
@@ -48,8 +58,8 @@
 
 
 	<div class="container">
-		<form method="post" action="reservation"
-		name="mainForm" modelAttribute="reservation">
+		<form method="post" action="reservation" name="mainForm"
+			modelAttribute="reservation">
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label for="exampleFormControlInput1">Ime Gosta</label> <input
@@ -224,7 +234,7 @@
 				<button type="button" class="btn btn-outline-secondary" name="edit"
 					id="editBtn" onclick="enableSaveBtn()">Uredi</button>
 				<button type="submit" class="btn btn-outline-danger" name="discard"
-					id="discardBtn" disabled> Odbaci</button>
+					id="discardBtn" disabled>Odbaci</button>
 			</div>
 
 
