@@ -383,8 +383,8 @@ public class MainController {
 		Reservation reservation = 
 				new Reservation(tourists
 						, apartment
-						, checkInDateLD.plusDays(1)		// must to add 1 day due to unknown problem
-						, checkOutDateLD.plusDays(1)	
+						, checkInDateLD		// 1 day off could be problem occurs on all tests but not on deployment
+						, checkOutDateLD	
 						//, BigDecimal.valueOf(Double.parseDouble(pricePerNight))
 						, pricePerNightBD
 						//, BigDecimal.valueOf(Double.parseDouble(totalPrice))
