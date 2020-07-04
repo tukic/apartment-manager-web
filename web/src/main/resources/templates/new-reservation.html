@@ -236,13 +236,16 @@
 			var checkInDateFld = document.getElementById("datepicker");
 			var checkOutDateFld = document.getElementById("datepicker2");
 
-			var totalPrice = pricePerNightTxtFld.value
+			var pricePerNight = parseFloat(pricePerNightTxtFld.value);
+			var totalPrice = pricePerNight
 				* daysBetween(parseDate(checkInDateFld.value)
 					, parseDate(checkOutDateFld.value));
 			if(!isNaN(totalPrice)) { 
-				totalPriceTxtFld.value = Math.round((totalPrice + Number.EPSILON) * 100) / 100;
+				var round = Math.round((totalPrice + Number.EPSILON) * 100) / 100;
+				totalPriceTxtFld.value = round.toFixed(2);
+				pricePerNightTxtFld.value = pricePerNight.toFixed(2);
 			}
-			
+
 		}
 
 

@@ -70,7 +70,7 @@ public class MainController {
 	public RedirectView  getReservation(
 			@PathVariable(required = true) Long id,
 			@RequestParam("name") String touristsName,
-			@RequestParam("apartmentName") String apartmentName,
+			@RequestParam("apartmentId") int apartmentId,
 			@RequestParam("checkInDate") String checkInDate,
 			@RequestParam("persons") String numberOfPersons,
 			@RequestParam("checkOutDate") String checkOutDate,
@@ -89,65 +89,84 @@ public class MainController {
 			@RequestParam("notes") String notes
 			) {
 		
-		
 		if(advancedPaymentPaid==null)
 			advancedPaymentPaid="no";
 		if(pets==null)
 			pets="no";
 		boolean petsBool = pets.equals("no") ? false : true;
 		
-		System.out.println(touristsName
-				+ checkInDate.toString() 
-				+ advancedPaymentPaid 
-				+ advancedPaymentAmount
-				+ " " + apartmentName);
-		System.out.println();
-		//Tourists tourists = touristsRepository.findById(Long.valueOf(40)).get();
-		Tourists tourists = new Tourists(touristsName, country, city,
-				Integer.valueOf(numberOfAdults), Integer.valueOf(numberOfChildren)
-				, Integer.valueOf(numberOfPersons), email, phone, petsBool, notes);
-		System.out.println(tourists.getTouristsId());
-		
-		//touristsRepository.save(tourists);
-		
-		//tourists.setTouristsId(Long.valueOf(42));
-		
-		/*		
-		touristsRepository.save(tourists);
-		
-		for (Apartment apartment : apartmentRepository.findAll()) {
-			if(apartment.getApartmentName().equals(apartmentName)) {
-				
-				//apartmentRepository.delete(apartment);
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-				System.out.println(apartment.getApartmentId());
-				
-				System.out.println(tourists);
-				System.out.println(apartment);
-				
-				Reservation reservation = 
-						new Reservation(tourists
-								, apartment
-								, LocalDate.parse(checkInDate, formatter)
-								, LocalDate.parse(checkOutDate, formatter)
-								//, BigDecimal.valueOf(Double.parseDouble(pricePerNight))
-								, new BigDecimal(pricePerNight.replace(".", "").replace(",", "."))
-								//, BigDecimal.valueOf(Double.parseDouble(totalPrice))
-								, new BigDecimal(totalPrice.replace(".", "").replace(",", "."))
-								, ReservationStatus.reservation
-								//, BigDecimal.valueOf(Double.parseDouble(advancedPaymentAmount))
-								, new BigDecimal(advancedPaymentAmount.replace(".", "").replace(",", "."))
-								, advancedPaymentCurrency);
-				
-				reservation.setReservationId(Long.valueOf(42));
-				
-				reservationRepository.save(reservation);
-				return new RedirectView("reserved-dates");
-			}
+		Integer numberOfPersonsInt, numberOfAdultsInt, numberOfChildrenInt;
+		try {
+			numberOfPersonsInt = Integer.valueOf(numberOfPersons); 
+		} catch (NumberFormatException exception) {
+			numberOfPersonsInt = null;
 		}
-		*/
-		//Reservation reservation = new Reservation(tourists, apartment, checkInDate, checkOutDate, pricePerNight, totalPrice, confirmed, advancedPayment, advPayCurrency)
+		try {
+			numberOfAdultsInt = Integer.valueOf(numberOfAdults);
+		} catch (NumberFormatException exception) {
+			numberOfAdultsInt = null;
+		}
+		try {
+			numberOfChildrenInt = Integer.valueOf(numberOfChildren); 
+		} catch (NumberFormatException exception) {
+			numberOfChildrenInt = null;
+		}
+		
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		LocalDate checkInDateLD = LocalDate.parse(checkInDate, formatter);
+		LocalDate checkOutDateLD = LocalDate.parse(checkOutDate, formatter);
+		
+		BigDecimal pricePerNightBD, totalPriceBD, advancedPaymentAmountBD;
+		try {
+			pricePerNightBD = new BigDecimal(pricePerNight);
+		} catch (NumberFormatException exception) {
+			pricePerNightBD = null;
+		}
+		try {
+			totalPriceBD = new BigDecimal(totalPrice);
+		} catch (NumberFormatException exception) {
+			totalPriceBD = pricePerNightBD.multiply(new BigDecimal(
+					ChronoUnit.DAYS.between(checkInDateLD, checkOutDateLD)));
+		}
+		try {
+			advancedPaymentAmountBD = 
+					new BigDecimal(advancedPaymentAmount);
+		} catch (NumberFormatException exception) {
+			advancedPaymentAmountBD = null;
+		}
+		
+		Optional<Reservation> optReservation = reservationRepository.findById(id);
+		if(optReservation.isPresent()) {
+			Tourists tourists = optReservation.get().getTourists();
+			tourists.setName(touristsName);
+			tourists.setNumberOfPersons(numberOfPersonsInt);
+			tourists.setNumberOfAdults(numberOfAdultsInt);
+			tourists.setNumberOfChildren(numberOfChildrenInt);
+			tourists.setCity(city);
+			tourists.setCountry(country);
+			tourists.setEmail(email);
+			tourists.setPhoneNumber(phone);
+			tourists.setPets(petsBool);
+			tourists.setTouristsNote(notes);
+			
+			Apartment apartment = apartmentRepository.findById(apartmentId).get();
+			
+			Reservation reservation = optReservation.get();
+			reservation.setApartment(apartment);
+			reservation.setCheckInDate(checkInDateLD);
+			reservation.setCheckOutDate(checkOutDateLD);
+			reservation.setPricePerNight(pricePerNightBD);
+			reservation.setTotalPrice(totalPriceBD);
+			reservation.setAdvPayCurrency(advancedPaymentCurrency);
+			reservation.setAdvancedPayment(advancedPaymentAmountBD);
+			
+			touristsRepository.save(tourists);
+			reservationRepository.save(reservation);
+			return new RedirectView("/demo/reservations/" + id);
+		}
+		
 		return new RedirectView("error");
+				
 	}
 	
 	@GetMapping(path = "/reservations")

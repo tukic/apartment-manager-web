@@ -58,7 +58,7 @@
 
 
 	<div class="container">
-		<form method="post" action="reservation" name="mainForm"
+		<form method="post" th:action="${reservation.reservationId}" name="mainForm"
 			modelAttribute="reservation">
 			<div class="row">
 				<div class="form-group col-md-6">
@@ -69,9 +69,9 @@
 				<div class="form-group col-md-6">
 					<label for="exampleFormControlSelect1">Apartman</label> <select
 						class="form-control" id="exampleFormControlSelect1"
-						name="apartmentName">
+						name="apartmentId">
 						<option th:each="apartment : ${apartments}"
-							th:value="${apartment.apartmentName}"
+							th:value="${apartment.apartmentId}"
 							th:text="${apartment.apartmentName}"
 							th:selected="${apartment.apartmentId==reservation.apartment.apartmentId}">
 						</option>
@@ -83,7 +83,9 @@
 				<div class="form-group col-md-6">
 					<label for="datepicker">Datum dolaska</label> <input type="date"
 						id="datepicker" class="form-control" size='9'
-						th:value="${reservation.checkInDate}" name="checkInDate">
+						th:value="${reservation.checkInDate}"
+						onchange="setTotalPrice()"
+						name="checkInDate">
 				</div>
 				<div class="form-group col-md-6">
 					<label for="exampleFormControlInput1">Broj osoba</label> <input
@@ -96,7 +98,9 @@
 				<div class="form-group col-md-6">
 					<label for="datepicker2">Datum odlaska</label> <input type="date"
 						id="datepicker2" class="form-control" size='9'
-						th:value="${reservation.checkOutDate}" name="checkOutDate">
+						th:value="${reservation.checkOutDate}"
+						onchange="setTotalPrice()"
+						name="checkOutDate">
 				</div>
 				<div class="form-group col-md-6">
 					<label for="exampleFormControlInput1">Broj odraslih</label> <input
@@ -108,10 +112,12 @@
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label for="exampleFormControlInput1">Cijena po noći</label> <input
-						type="text" class="form-control" id="exampleFormControlInput1"
+						type="number" class="form-control" id="pricePerNightTxtFld"
 						placeholder=""
-						th:value="${#numbers.formatDecimal(reservation.pricePerNight, 1, 'POINT', 2, 'COMMA')}"
-						name="pricePerNight">
+						th:value="${reservation.pricePerNight}"
+						name="pricePerNight"
+						onchange="setTotalPrice()"
+						step="0.01">
 				</div>
 				<div class="form-group col-md-6">
 					<label for="exampleFormControlInput1">Broj djece</label> <input
@@ -162,15 +168,17 @@
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label for="exampleFormControlInput1">Iznos akontacije</label> <input
-						type="text" class="form-control" id="exampleFormControlInput1"
+						type="number" class="form-control" id="exampleFormControlInput1"
 						placeholder=""
-						th:value="${#numbers.formatDecimal(reservation.advancedPayment, 1, 'POINT', 2, 'COMMA')}"
-						name="advancedPaymentAmount">
+						th:value="${reservation.advancedPayment}"
+						name="advancedPaymentAmount"
+						onchange="setTotalPrice()"
+						step="0.01">
 				</div>
 
 				<div class="form-group col-md-6">
 					<label for="exampleFormControlInput1">Država</label> <input
-						type="text" class="form-control" id="exampleFormControlInput1"
+						type="text" class="form-control" id="countryId"
 						placeholder="" th:value="${reservation.tourists.country}"
 						name="country">
 				</div>
@@ -180,15 +188,16 @@
 			<div class="row">
 				<div class="form-group col-md-6">
 					<label for="exampleFormControlInput1">Ukupna cijena</label> <input
-						type="text" class="form-control" id="exampleFormControlInput1"
+						type="number" class="form-control" id="totalPriceTxtFld"
 						placeholder=""
-						th:value="${#numbers.formatDecimal(reservation.totalPrice, 1, 'POINT', 2, 'COMMA')}"
-						name="totalPrice">
+						th:value="${reservation.totalPrice}"
+						name="totalPrice"
+						step="0.01">
 				</div>
 
 				<div class="form-group col-md-6">
 					<label for="exampleFormControlInput1">E-mail</label> <input
-						type="email" class="form-control" id="exampleFormControlInput1"
+						type="email" class="form-control" id="emailId"
 						placeholder="" th:value="${reservation.tourists.email}"
 						name="email">
 				</div>
@@ -198,7 +207,7 @@
 				<div class="form-group col-md-6">
 
 					<label for="exampleFormControlInput1">Broj telefona</label> <input
-						type="text" class="form-control" id="exampleFormControlInput1"
+						type="text" class="form-control" id="phoneId"
 						placeholder="" th:value="${reservation.tourists.phoneNumber}"
 						name="phone">
 				</div>
@@ -223,7 +232,7 @@
 			<div class="row">
 				<div class="form-group col-md-12">
 					<label for="exampleFormControlInput1">Bilješke</label>
-					<textarea class="form-control" id="exampleFormControlInput1"
+					<textarea class="form-control" id="notesId"
 						rows="4" th:inline="text" name="notes">[[${reservation.tourists.touristsNote}]]</textarea>
 				</div>
 			</div>
@@ -242,6 +251,41 @@
 	</div>
 
 	<script type="text/javascript">
+
+	function parseDate(str) {
+	    var mdy = str.split('-');
+	    return new Date(mdy[0], mdy[1]-1, mdy[2]);
+	}
+
+	function treatAsUTC(date) {
+	    var result = new Date(date);
+	    result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+	    return result;
+	}
+
+	function daysBetween(startDate, endDate) {
+	    var millisecondsPerDay = 24 * 60 * 60 * 1000;
+	    return (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
+	}
+	
+	function setTotalPrice() {
+				
+		var totalPriceTxtFld = document.getElementById("totalPriceTxtFld"); 
+		var pricePerNightTxtFld = document.getElementById("pricePerNightTxtFld");
+		var checkInDateFld = document.getElementById("datepicker");
+		var checkOutDateFld = document.getElementById("datepicker2");
+
+		var pricePerNight = parseFloat(pricePerNightTxtFld.value);
+		var totalPrice = pricePerNight
+			* daysBetween(parseDate(checkInDateFld.value)
+				, parseDate(checkOutDateFld.value));
+		
+		if(!isNaN(totalPrice)) { 
+			var round = Math.round((totalPrice + Number.EPSILON) * 100) / 100;
+			totalPriceTxtFld.value = round.toFixed(2);
+			pricePerNightTxtFld.value = pricePerNight.toFixed(2);
+		}		
+	}
 
     function enableSaveBtn() {
         document.getElementById("saveBtn").disabled = false;
