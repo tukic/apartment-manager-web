@@ -244,6 +244,9 @@
 					id="editBtn" onclick="enableSaveBtn()">Uredi</button>
 				<button type="submit" class="btn btn-outline-danger" name="discard"
 					id="discardBtn" disabled>Odbaci</button>
+				<button type="button" class="btn btn-outline-danger" name="delete"
+					th:href="${reservation.reservationId}"
+					id="discardBtn" onclick="confirmDeleting(this)">Izbriši</button>
 			</div>
 
 
@@ -302,6 +305,18 @@
       f.elements[i].readOnly = true;//As @oldergod noted, the "O" must be upper case
     }
 
+    // opens confirmation popup 
+    // if deleting is confirmed sends post request to .../reservations/{id}/delete
+    function confirmDeleting(element) {
+		var confirmation = confirm("Jeste li sigurni da želite izbrisati ovu rezervaciju?");
+		if(confirmation) {
+			const form = document.createElement('form');
+			form.method = 'post';
+			form.action = element.getAttribute("href") + "/delete";
+			document.body.appendChild(form);
+		  	form.submit();
+		}	
+    }
 </script>
 
 	<!-- Optional JavaScript -->

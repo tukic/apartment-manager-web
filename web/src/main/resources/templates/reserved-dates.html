@@ -83,13 +83,13 @@ th {
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 						<a class="dropdown-item" href="/demo/reservations">Rezervacije</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="/demo/reservations/new">Nova rezervacija</a>
-					</div>
-				</li>
+						<a class="dropdown-item" href="/demo/reservations/new">Nova
+							rezervacija</a>
+					</div></li>
 
-				<li class="nav-item">
-			<a class="nav-link" href="apartments">Apartmani</a>
-				</li></ul>
+				<li class="nav-item"><a class="nav-link" href="apartments">Apartmani</a>
+				</li>
+			</ul>
 			<div class="dropdown-divider"></div>
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item"><a class="nav-link" href="login"
@@ -103,6 +103,25 @@ th {
 	</nav>
 
 	<div class="container">
+
+		<div class="alert alert-success alert-dismissible"
+			th:if="${successfulDeleting}">
+			<strong>Rezervacija izbrisana!</strong>
+			<button type="button" class="close" data-dismiss="alert"
+				aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+		<div class="alert alert-danger alert-dismissible"
+			th:if="${successfulDeleting == false}">
+			<strong>Pogreška tijekom brisanja rezervacije!</strong> Rezervacija
+			nije izbrisana.
+			<button type="button" class="close" data-dismiss="alert"
+				aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+
 		<table class="table tableFixHead table-hover">
 			<thead class="thead-dark">
 				<tr>

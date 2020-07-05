@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import hr.apartmentmanager.enumerations.ReservationStatus;
@@ -66,8 +67,27 @@ public class MainController {
 	}
 	
 	
+	/**
+	 * Deletes reservation from the system and redirects to main calendar
+	 * @param id of the reservation to delete
+	 * @return RedirectView to demo/reserved-dates
+	 */
+	@PostMapping(path = "/reservations/{id}/delete")
+	public RedirectView deleteReservation(
+			@PathVariable(required = true) Long id,
+			RedirectAttributes redirectAttributes) {
+		try {
+			reservationRepository.deleteById(id);
+		} catch (IllegalArgumentException e) {
+			redirectAttributes.addAttribute("successfulDeleting", "false");
+		}
+		redirectAttributes.addAttribute("successfulDeleting", "true");
+		return new RedirectView("/demo/reserved-dates");
+	}
+	
+	
 	@PostMapping(path = "/reservations/{id}")
-	public RedirectView  getReservation(
+	public RedirectView getReservation(
 			@PathVariable(required = true) Long id,
 			@RequestParam("name") String touristsName,
 			@RequestParam("apartmentId") int apartmentId,
@@ -227,7 +247,8 @@ public class MainController {
 	
 	@GetMapping(path = "/reserved-dates")
 	public ModelAndView getReservedDates(@RequestParam(required = false) Integer month
-			, @RequestParam(required = false) Integer year) {
+			, @RequestParam(required = false) Integer year
+			, @RequestParam(required = false) Optional<Boolean> successfulDeleting) {
 		
 		month = (month != null) ? month : Calendar.getInstance().get(Calendar.MONTH);
 		year = (year != null) ? year : Calendar.getInstance().get(Calendar.YEAR);
@@ -263,6 +284,8 @@ public class MainController {
 		String user = getUserName();
 		
 		ModelAndView mav = new ModelAndView();
+		if(successfulDeleting.isPresent())
+			mav.addObject("successfulDeleting", successfulDeleting.get());
 		mav.addObject("user", user);
 		mav.addObject("yearsInt", years);
 		mav.addObject("monthsInt", months);
