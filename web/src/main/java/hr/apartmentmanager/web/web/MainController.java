@@ -338,6 +338,8 @@ public class MainController {
 	}
 	*/
 	
+	
+	// opens new reservation page
 	@GetMapping(path="/reservations/new")
 	private ModelAndView newReservation() {
 		
